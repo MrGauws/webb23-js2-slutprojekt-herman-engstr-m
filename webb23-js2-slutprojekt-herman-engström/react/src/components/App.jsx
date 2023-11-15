@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import Navbar from './Navbar';
 import ProductPage from './ProductPage';
+import CartPage from './CartPage';
 
 // Komponent för hela applikationen
 const App = () => {
@@ -7,12 +9,18 @@ const App = () => {
   const [cartItems, setCartItems] = useState([]);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  // Tillstånd för att visa eller dölja en popup
   const [showPopup, setShowPopup] = useState(false);
+  const [currentPage, setCurrentPage] = useState('products');
+  // Tillstånd för att visa eller dölja en popup
+  const [showCart, setShowCart] = useState(false);
+
+  // Funktion för att byta sida
+  const switchPage = (page) => {
+    setCurrentPage(page);
+  };
 
   // Funktion för att lägga till produkt i varukorgen
   const addToCart = (product) => {
-    // Kontrollera om produkten redan finns i varukorgen
     const existingItem = cartItems.find((item) => item.id === product.id);
 
     if (existingItem) {
@@ -83,23 +91,44 @@ const App = () => {
     }
   };
 
-  // Rendera ProductPage-komponenten och skicka med nödvändig data och funktioner
+  const calculateTotalPrice = () => {
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+  };
+
+  // Rendera komponenterna och skickar med nödvändig data och funktioner
   return (
     <div>
-      <ProductPage
-        cartItems={cartItems}
-        addToCart={addToCart}
-        removeFromCart={removeFromCart}
-        clearCart={clearCart}
-        updateQuantity={updateQuantity}
-        updateStock={updateStock}
-        products={products}
-        setProducts={setProducts}
-        filteredProducts={filteredProducts}
-        setFilteredProducts={setFilteredProducts}
-        showPopup={showPopup}
-        setShowPopup={setShowPopup}
-      />
+      <Navbar switchPage={switchPage} setShowCart={setShowCart} cartItems={cartItems} />
+      <div className="container">
+        {currentPage === 'products' ? (
+          <ProductPage
+            cartItems={cartItems}
+            addToCart={addToCart}
+            removeFromCart={removeFromCart}
+            clearCart={clearCart}
+            updateQuantity={updateQuantity}
+            updateStock={updateStock}
+            products={products}
+            setProducts={setProducts}
+            filteredProducts={filteredProducts}
+            setFilteredProducts={setFilteredProducts}
+            showPopup={showPopup}
+            setShowPopup={setShowPopup}
+            calculateTotalPrice={calculateTotalPrice}
+            switchPage={switchPage}
+          />
+        ) : (
+            <CartPage
+              cartItems={cartItems}
+              removeFromCart={removeFromCart}
+              clearCart={clearCart}
+              updateQuantity={updateQuantity}
+              updateStock={updateStock}
+              setShowCart={setShowCart}
+              switchPage={switchPage}
+          />
+        )}
+      </div>
     </div>
   );
 };
