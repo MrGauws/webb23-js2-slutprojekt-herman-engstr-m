@@ -4,6 +4,7 @@ import('node-fetch').then(fetchModule => {
   const express = require('express');
   const bodyParser = require('body-parser');
   const cors = require('cors');
+  const fs = require('fs');
   const app = express();
   const port = 5000;
 
@@ -11,7 +12,7 @@ import('node-fetch').then(fetchModule => {
   app.use(bodyParser.json());
 
   // Läs in produkter från shop.json
-  const products = require('./shop.json');
+  let products = require('./shop.json');
 
   // GET-endpoint för att hämta alla produkter
   app.get('/api/products', (req, res) => {
@@ -27,7 +28,7 @@ import('node-fetch').then(fetchModule => {
     res.json(filteredProducts);
   });
 
-  // POST-endpoint för att uppdatera lagersaldo
+  // POST-endpoint för att uppdatera lagersaldo och spara ändringar i shop.json
   app.post('/api/update-stock', (req, res) => {
     const updatedProducts = req.body.updatedProducts;
     updatedProducts.forEach(updatedProduct => {
@@ -36,6 +37,9 @@ import('node-fetch').then(fetchModule => {
         products[index].stock = updatedProduct.stock;
       }
     });
+
+    // Spara de uppdaterade produkterna till shop.json
+    fs.writeFileSync('./shop.json', JSON.stringify(products, null, 2));
 
     // Svara med de uppdaterade produkterna
     res.json(products);
