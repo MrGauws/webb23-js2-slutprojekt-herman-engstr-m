@@ -31,7 +31,7 @@ const ProductCard = ({ product, addToCart, showAddToCartButton = true }) => {
       <img src={selectedImage} alt={name} />
       {/* Produktinformation */}
       <h2>{name}</h2>
-      <p>Pris: {price} SEK</p>
+      <p>Pris: {price.toLocaleString('sv-SE')} SEK</p>
       <p>Lagersaldo: {stock}</p>
       {/* Lägg till i kundvagn-knapp */}
       {showAddToCartButton && (
