@@ -1,28 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import ProductList from './ProductList';
-import CartPage from './CartPage';
-import Navbar from './Navbar';
 
-const ProductPage = ({
-  cartItems,
-  addToCart,
-  removeFromCart,
-  clearCart,
-  updateQuantity,
-  updateStock,
-  products,
-  setProducts,
-  filteredProducts,
-  setFilteredProducts,
-  showPopup,
-  setShowPopup,
-}) => {
+// Produktsidan
+const ProductPage = ({ switchPage, addToCart, updateQuantity, products, setProducts, filteredProducts, setFilteredProducts }) => {
+  // Deklarera sökfrågan och sorteringsordning
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
-  const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
-    // Hämta produkter från API när komponenten monteras
+    // Hämta produkter från API:et
     const fetchProducts = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/products');
@@ -34,48 +20,46 @@ const ProductPage = ({
       }
     };
 
+    // Anropa funktionen för att hämta produkter när komponenten monteras
     fetchProducts();
   }, [setProducts, setFilteredProducts]);
 
   useEffect(() => {
-    // Sök och sortera produkter baserat på användarens val
+    // Sök och sortera produkter när sökfrågan eller sorteringsordningen ändras
     const searchAndSortProducts = () => {
       let result = [...products];
 
-      // Filtrera produkter baserat på sökningen
+      // Filtrera produkter baserat på sökfrågan
       if (searchQuery) {
-        result = result.filter((product) =>
-          product.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
+        result = result.filter((product) => product.name.toLowerCase().includes(searchQuery.toLowerCase()));
       }
 
-      // Sortera produkter baserat på pris och ordning
+      // Sortera produkter baserat på sorteringsordningen
       if (sortOrder === 'asc') {
         result.sort((a, b) => a.price - b.price);
       } else if (sortOrder === 'desc') {
         result.sort((a, b) => b.price - a.price);
       }
 
+      // Uppdatera filtrerade produkter
       setFilteredProducts(result);
     };
 
+    // Anropa funktionen för att söka och sortera produkter
     searchAndSortProducts();
   }, [searchQuery, sortOrder, products, setFilteredProducts]);
 
   return (
     <div>
-      {/* Komponenten Navbar som visar navigationsmeny */}
-      <Navbar setShowCart={setShowCart} cartItems={cartItems} />
       <div className="container">
-        {/* Sökruta för att söka efter produkter */}
+        {/* Sökinput */}
         <input
           type="text"
           placeholder="Sök efter produkt"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-
-        {/* Dropdown för att välja sorteringsordning för pris */}
+        {/* Sorteringsalternativ */}
         <label>
           Sortera efter pris:
           <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
@@ -83,27 +67,14 @@ const ProductPage = ({
             <option value="desc">Fallande</option>
           </select>
         </label>
-
-        {/* Visa antingen kundvagnen eller produktlistan baserat på användarens val */}
-        {showCart ? (
-          <CartPage
-            cartItems={cartItems}
-            removeFromCart={removeFromCart}
-            clearCart={clearCart}
-            updateQuantity={updateQuantity}
-            updateStock={updateStock}
-            setShowCart={setShowCart}
-          />
-        ) : (
-          <>
-            <h1>Produktsida</h1>
-            {/* Komponenten ProductList som visar en lista av produkter */}
-            <ProductList products={filteredProducts} addToCart={addToCart} updateQuantity={updateQuantity} />
-          </>
-        )}
+        {/* Rubrik */}
+        <h1>Produktsida</h1>
+        {/* Lista över produkter */}
+        <ProductList products={filteredProducts} addToCart={addToCart} updateQuantity={updateQuantity} />
       </div>
     </div>
   );
 };
 
+// Exportera komponenten
 export default ProductPage;
