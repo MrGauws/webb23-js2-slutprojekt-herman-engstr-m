@@ -2,33 +2,34 @@ import React, { useState, useEffect, useRef } from 'react';
 import ProductCard from './ProductCard';
 import '../css/App.css';
 
-const CartPage = ({ cartItems, removeFromCart, clearCart, updateQuantity, updateStock, setShowCart }) => {
+// Komponent för sidan med kundvagnen
+const CartPage = ({ cartItems, removeFromCart, clearCart, updateQuantity, updateStock, setShowCart, switchPage }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const popupRef = useRef(null);
 
-  // Funktion för att hantera betalning och uppdatera lager
+  // Funktion för att hantera betalning
   const handlePayment = () => {
     clearCart();
     updateStock();
     setShowPopup(true);
+    switchPage('products'); // Använd switchPage här
   };
 
+  // Effekt för att sätta betalningssuccess när popup visas
   useEffect(() => {
-    // Uppdatera paymentSuccess när showPopup ändras
     if (showPopup) {
       setPaymentSuccess(true);
     }
   }, [showPopup]);
 
+  // Effekt för att dölja popup efter 3 sekunder
   useEffect(() => {
-    // Ställ in en timeout för att stänga popup efter 3 sekunder
     const timeoutId = setTimeout(() => {
       setShowPopup(false);
       setPaymentSuccess(false);
     }, 3000);
 
-    // Rensa timeout vid komponentavmontering
     return () => {
       clearTimeout(timeoutId);
     };
@@ -41,7 +42,6 @@ const CartPage = ({ cartItems, removeFromCart, clearCart, updateQuantity, update
         <ul>
           {cartItems.map((item, index) => (
             <li key={index}>
-              {/* Använd ProductCard för att visa produkten i kundvagnen */}
               <ProductCard product={item} addToCart={() => {}} showAddToCartButton={false} />
               <div>
                 <h2>{item.name}</h2>
@@ -64,30 +64,28 @@ const CartPage = ({ cartItems, removeFromCart, clearCart, updateQuantity, update
           ))}
         </ul>
       ) : (
-        <p>Kundvagnen är tom.</p>
+        <p id="empty-cart-message">Kundvagnen är tom.</p>
       )}
       {cartItems && cartItems.length > 0 && (
-        <>
-          <p>Totalt: {cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)} SEK</p>
-          <button onClick={handlePayment}>Betala</button>
-        </>
+        <div className="cart-total">
+          <p>Totalt: {cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0).toLocaleString('sv-SE', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} SEK</p>
+          <div className="cart-buttons">
+            <button onClick={handlePayment}>Betala</button>
+            <button onClick={() => { clearCart(); setShowCart(false); switchPage('products'); }}>Töm kundvagn</button>
+          </div>
+        </div>
       )}
       {showPopup && paymentSuccess && (
         <div ref={popupRef} className="popup">
-          {/* Meddelande för framgångsrik betalning */}
           <p>Tack för ditt köp, du kommer få en orderbekräftelse alldeles strax.</p>
         </div>
       )}
 
       {showPopup && !paymentSuccess && (
         <div ref={popupRef} className="popup">
-          {/* Meddelande när kundvagnen är tom */}
-          <p>Kundvagnen är tom.</p>
+          <p id="empty-cart-message">Kundvagnen är tom.</p>
         </div>
       )}
-
-      {/* Knapp för att tömma kundvagnen */}
-      <button onClick={() => { clearCart(); setShowCart(false); }}>Töm kundvagn</button>
     </div>
   );
 };
