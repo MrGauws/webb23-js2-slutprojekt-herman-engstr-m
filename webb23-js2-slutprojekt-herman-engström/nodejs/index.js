@@ -11,7 +11,7 @@ import('node-fetch').then(fetchModule => {
   app.use(cors());
   app.use(bodyParser.json());
 
-  // Läs in produkter från shop.json
+  // Läser in produkter från shop.json
   let products = require('./shop.json');
 
   // GET-endpoint för att hämta alla produkter
@@ -38,10 +38,10 @@ import('node-fetch').then(fetchModule => {
       }
     });
 
-    // Spara de uppdaterade produkterna till shop.json
+    // Sparar de uppdaterade produkterna till shop.json
     fs.writeFileSync('./shop.json', JSON.stringify(products, null, 2));
 
-    // Svara med de uppdaterade produkterna
+    // Svarar med de uppdaterade produkterna
     res.json(products);
   });
 
