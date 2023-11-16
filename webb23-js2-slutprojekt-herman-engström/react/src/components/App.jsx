@@ -24,13 +24,13 @@ const App = () => {
     const existingItem = cartItems.find((item) => item.id === product.id);
 
     if (existingItem) {
-      // Uppdatera varukorgen om produkten redan finns
+      // Uppdaterar varukorgen om produkten redan finns
       const updatedCart = cartItems.map((item) =>
         item.id === product.id ? { ...item, quantity: Math.min(item.quantity + 1, item.stock) } : item
       );
       setCartItems(updatedCart);
     } else {
-      // Lägg till produkt i varukorgen om den inte finns
+      // Lägger till produkt i varukorgen om den inte finns
       const updatedCart = [...cartItems, { ...product, quantity: 1 }];
       setCartItems(updatedCart);
     }
@@ -58,13 +58,13 @@ const App = () => {
   // Funktion för att uppdatera lagerstatus och skicka data till servern
   const updateStock = async () => {
     try {
-      // Uppdatera produkternas lagerstatus baserat på varukorgen
+      // Uppdaterar produkternas lagerstatus baserat på varukorgen
       const updatedProducts = cartItems.map((item) => {
         const product = products.find((p) => p.id === item.id);
         return { ...product, stock: product.stock - item.quantity };
       });
 
-      // Skicka uppdaterad lagerstatus till servern
+      // Skickar uppdaterad lagerstatus till servern
       const response = await fetch('http://localhost:5000/api/update-stock', {
         method: 'POST',
         headers: {
@@ -73,7 +73,7 @@ const App = () => {
         body: JSON.stringify({ updatedProducts }),
       });
 
-      // Om serveranropet lyckades, uppdatera varukorgen och hämta nya produktdata
+      // Om serveranropet lyckades, uppdaterar den varukorgen och hämtar ny produktdata
       if (response.ok) {
         clearCart();
         const fetchProductsResponse = await fetch('http://localhost:5000/api/products');
@@ -82,11 +82,11 @@ const App = () => {
         setFilteredProducts(updatedProductsData);
         setShowPopup(true);
       } else {
-        // Vid fel, logga felmeddelande
+        // Vid fel, loggar felmeddelande
         console.error('Failed to update stock');
       }
     } catch (error) {
-      // Vid fel, logga felmeddelande
+      // Vid fel, loggar felmeddelande
       console.error('Error updating stock:', error);
     }
   };
@@ -95,7 +95,7 @@ const App = () => {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
   };
 
-  // Rendera komponenterna och skickar med nödvändig data och funktioner
+  // Renderar komponenterna och skickar med nödvändig data och funktioner
   return (
     <div>
       <Navbar switchPage={switchPage} setShowCart={setShowCart} cartItems={cartItems} />
