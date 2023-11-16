@@ -8,22 +8,22 @@ const CartPage = ({ cartItems, removeFromCart, clearCart, updateQuantity, update
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const popupRef = useRef(null);
 
-  // Funktion för att hantera betalning
+  // Hanterar betalningen
   const handlePayment = () => {
     clearCart();
     updateStock();
     setShowPopup(true);
-    switchPage('products'); // Använd switchPage här
+    switchPage('products'); // Använder switchPage här
   };
 
-  // Effekt för att sätta betalningssuccess när popup visas
+  // Effekt för att sätta betalnings-success när popup visas
   useEffect(() => {
     if (showPopup) {
       setPaymentSuccess(true);
     }
   }, [showPopup]);
 
-  // Effekt för att dölja popup efter 3 sekunder
+  // Effekt för att dölja popup efter 3 sekunder.
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setShowPopup(false);
