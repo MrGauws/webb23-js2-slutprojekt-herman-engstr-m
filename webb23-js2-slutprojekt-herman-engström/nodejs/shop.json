@@ -1,8 +1,44 @@
 [
-  { "id": 1, "name": "Starbucks", "price": 193.395, "stock": 5, "image": "products/rolex1.jpg" },
-  { "id": 2, "name": "Pepsi", "price": 242.799, "stock": 10, "image": "products/rolex2.jpg" },
-  { "id": 3, "name": "Submariner", "price": 229.395, "stock": 15, "image": "products/rolex3.jpg" },
-  { "id": 4, "name": "Yacht 2", "price": 537.595, "stock": 20, "image": "products/rolex4.jpg" },
-  { "id": 5, "name": "Yacht", "price": 244.895, "stock": 25, "image": "products/rolex5.jpg" },
-  { "id": 6, "name": "Datejust", "price": 133.095, "stock": 30, "image": "products/rolex6.jpg" }
+  {
+    "id": 1,
+    "name": "Starbucks",
+    "price": 193395,
+    "stock": 4,
+    "image": "products/rolex1.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Pepsi",
+    "price": 242799,
+    "stock": 2,
+    "image": "products/rolex2.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Submariner",
+    "price": 229395,
+    "stock": 7,
+    "image": "products/rolex3.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Yacht 2",
+    "price": 537595,
+    "stock": 19,
+    "image": "products/rolex4.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Yacht",
+    "price": 244895,
+    "stock": 20,
+    "image": "products/rolex5.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Datejust",
+    "price": 133095,
+    "stock": 30,
+    "image": "products/rolex6.jpg"
+  }
 ]
