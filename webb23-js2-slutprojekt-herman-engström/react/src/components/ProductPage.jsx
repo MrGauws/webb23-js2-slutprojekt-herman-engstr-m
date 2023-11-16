@@ -3,12 +3,12 @@ import ProductList from './ProductList';
 
 // Produktsidan
 const ProductPage = ({ switchPage, addToCart, updateQuantity, products, setProducts, filteredProducts, setFilteredProducts }) => {
-  // Deklarera sökfrågan och sorteringsordning
+  // Deklarerar sökfrågan och sorteringsordning
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
 
   useEffect(() => {
-    // Hämta produkter från API:et
+    // Hämtar produkter från API:et
     const fetchProducts = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/products');
@@ -29,23 +29,23 @@ const ProductPage = ({ switchPage, addToCart, updateQuantity, products, setProdu
     const searchAndSortProducts = () => {
       let result = [...products];
 
-      // Filtrera produkter baserat på sökfrågan
+      // Filtrerar produkter baserat på sökfrågan
       if (searchQuery) {
         result = result.filter((product) => product.name.toLowerCase().includes(searchQuery.toLowerCase()));
       }
 
-      // Sortera produkter baserat på sorteringsordningen
+      // Sorterar produkter baserat på sorteringsordningen
       if (sortOrder === 'asc') {
         result.sort((a, b) => a.price - b.price);
       } else if (sortOrder === 'desc') {
         result.sort((a, b) => b.price - a.price);
       }
 
-      // Uppdatera filtrerade produkter
+      // Uppdaterar filtrerade produkter
       setFilteredProducts(result);
     };
 
-    // Anropa funktionen för att söka och sortera produkter
+    // Anropar funktionen för att söka och sortera produkter
     searchAndSortProducts();
   }, [searchQuery, sortOrder, products, setFilteredProducts]);
 
