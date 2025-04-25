@@ -1,0 +1,17 @@
+{
+  "name": "webb23-js2-slutprojekt-herman-engstr-m",
+  "version": "1.0.0",
+  "description": "Slutprojekt JS2 - Herman Engström",
+  "main": "index.js",
+  "scripts": {
+    "predeploy": "echo 'No build step needed'",
+    "deploy": "gh-pages -d ."
+  },
+  "keywords": [],
+  "author": "Herman Engström",
+  "license": "MIT",
+  "homepage": "https://MrGauws.github.io/webb23-js2-slutprojekt-herman-engstr-m",
+  "devDependencies": {
+    "gh-pages": "^6.1.1"
+  }
+}
